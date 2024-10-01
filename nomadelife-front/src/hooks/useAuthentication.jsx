@@ -31,7 +31,7 @@ export const useAuthentication = () => {
             const { user } = await createUserWithEmailAndPassword(
                 auth,
                 data.email,
-                data.password
+                data.password,
             )
             await updateProfile(user, {
                 displayName: data.displayName
@@ -52,6 +52,42 @@ export const useAuthentication = () => {
             }else{
                 systemErrorMessage = "Ocorreu um erro, tente novamente mais tarde."
             }
+
+            setLoading(false)
+            setError(systemErrorMessage)
+        }
+
+        try {
+            const { user } = await createUserWithNameEmailPassawordAndConfirmpassword(
+                auth,
+                data.username,
+                data.email,
+                data.password,
+                data.confirmpassaword
+            )
+            await updateProfile(user, {
+                displayName: data.displayName
+            })
+            setLoading(false)
+
+            return user
+        }catch(error){
+            console.error(error.message)
+            console.table(typeof error.message)
+
+            let systemErrorMessage
+            if (error.message.include('username-already')) {
+                systemErrorMessage = "Nome de usuário já existente"
+            } else if(error.message.include('Password')){
+                systemErrorMessage = "A senha precisa conter ao menos 6 caracteres."
+            } else if (error.message.include('Confirmpassword')) {
+                systemErrorMessage = "A senha não confere com a informada acima"
+            } else if(error.message.include('email-already')){
+                systemErrorMessage = "E-mail já cadastrado em nosso sistema."
+            } else{
+                systemErrorMessage = "Ocorreu um erro, tente novamente mais tarde."
+            }
+
 
             setLoading(false)
             setError(systemErrorMessage)

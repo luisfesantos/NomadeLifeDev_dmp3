@@ -3,13 +3,13 @@ import { getAnalytics } from "firebase/analytics"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyChNM_oR53KHFniahMot64vrnjVvIIuwHc",
-  authDomain: "nomadelife-vsi.firebaseapp.com",
-  projectId: "nomadelife-vsi",
-  storageBucket: "nomadelife-vsi.appspot.com",
-  messagingSenderId: "146063288386",
-  appId: "1:146063288386:web:b2654d95ef6f59223ae5db",
-  measurementId: "G-GYKRFVEXK5"
+  apiKey: "AIzaSyAFbAfKmXG7zaG2MJbgHh7LHhy7YpljZdk",
+  authDomain: "nomadelife-luisfelipe.firebaseapp.com",
+  projectId: "nomadelife-luisfelipe",
+  storageBucket: "nomadelife-luisfelipe.appspot.com",
+  messagingSenderId: "787648513094",
+  appId: "1:787648513094:web:6aa43aba3c8d751f58f647",
+  measurementId: "G-7QSS89G6L8"
 }
 const app = initializeApp(firebaseConfig)
 const analytics = getAnalytics(app)
