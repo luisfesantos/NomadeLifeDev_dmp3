@@ -1,17 +1,17 @@
-import { useState, useEffect, useReducer } from "react"
-import { db } from '../firebase/config'
-import { collection, addDoc, Timestamp } from "firebase/firestore"
-
+import { useState, useEffect, useReducer } from "react";
+import { db } from "../firebase/config"
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+ 
 const initialState = {
     loading: null,
     error: null
 }
-
+ 
 const insertReducer = (state, action) => {
     switch (action.type) {
         case "LOADING":
             return { loading: true, error: null }
-        case "INSER_DOC":
+        case "INSERT_DOC":
             return { loading: false, error: null }
         case "ERROR":
             return { loading: false, error: action.payload }
@@ -19,45 +19,46 @@ const insertReducer = (state, action) => {
             return state
     }
 }
-
+ 
 export const useInsertDocument = (docCollection) => {
-    const [response, dispath] = useReducer(insertReducer, initialState)
+    const [response, dispatch] = useReducer(insertReducer, initialState)
     const [cancelled, setCancelled] = useState(false)
-
-    const checkCancelBeforeDispath = (action) => {
+ 
+    const checkCancelBeforeDispatch = (action) => {
         if (!cancelled) {
-            dispath(action)
+            dispatch(action)
         }
     }
-
+ 
     const insertDocument = async (document) => {
-        checkCancelBeforeDispath({ type: "LOADING" })
-
+        checkCancelBeforeDispatch({ type: "LOADING" })
+ 
         try {
-            const newDocument = { ...document, creatAt: Timestamp.now() }
+            const newDocument = { ...document, createdAt: Timestamp.now() }
+ 
             const insertDocument = await addDoc(
-                collection(db, dbCollection),
+                collection(db, docCollection),
                 newDocument
             )
-
-            checkCancelBeforeDispath({
+ 
+            checkCancelBeforeDispatch({
                 type: "INSERT_DOC",
                 payload: insertDocument
             })
-        } catch (error) {
-            checkCancelBeforeDispath({
+        } catch(error){
+            checkCancelBeforeDispatch({
                 type: "ERROR",
                 payload: error.message
             })
         }
     }
-
-    useEffect(() => {
+ 
+    useEffect(() =>{
         return () => setCancelled(true)
     }, [])
-
-    return(
+ 
+    return{
         insertDocument,
         response
-    )
+    }
 }
